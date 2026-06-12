@@ -132,36 +132,42 @@ repos:
           </article>
           <article>
             <span>03</span>
+            <h3>Clone a project</h3>
+            <code>mwt clone git@github.com:org/workspace.git</code>
+            <p>Clone a config repo, then initialize every repository it describes.</p>
+          </article>
+          <article>
+            <span>04</span>
             <h3>Fetch a base</h3>
             <code>mwt fetch main</code>
             <p>Fetch every canonical repo and check each one out to a common branch.</p>
           </article>
           <article>
-            <span>04</span>
+            <span>05</span>
             <h3>Create worktrees</h3>
             <code>mwt create feature-x</code>
             <p>Create one real Git worktree per configured repository.</p>
           </article>
           <article>
-            <span>05</span>
+            <span>06</span>
             <h3>Inspect work</h3>
             <code>mwt status feature-x</code>
             <p>Show branch, clean state, ahead/behind counts, and short status.</p>
           </article>
           <article>
-            <span>06</span>
+            <span>07</span>
             <h3>Run commands</h3>
             <code>mwt foreach feature-x -- go test ./...</code>
             <p>Execute the same command inside every named worktree.</p>
           </article>
           <article>
-            <span>07</span>
+            <span>08</span>
             <h3>Snapshot</h3>
             <code>mwt snapshot feature-x</code>
             <p>Print the exact commit in each repo before a risky operation.</p>
           </article>
           <article>
-            <span>08</span>
+            <span>09</span>
             <h3>Merge carefully</h3>
             <code>mwt merge feature-x --dry-run</code>
             <p>Validate all repos before merging. Cross-repo merges are not atomic.</p>
