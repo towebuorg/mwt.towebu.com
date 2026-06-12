@@ -174,25 +174,27 @@ repos:
           <p class="section-kicker">One last thing</p>
           <h2>Put the workspace file in Git.</h2>
           <p>
-            Create a repository for `mwt.yaml` and share it with the team. That
-            gives everyone the same multi-repo map, so each developer can create
-            parallel worktrees, switch between efforts, and keep unrelated work
-            separated without losing the shared project shape.
+            Create a repository for `mwt.yaml` and share it with the team. Use
+            it to track all company repositories, the most important ones, or a
+            single project that spans several repos.
+          </p>
+          <p>
+            After cloning the shared config, use `mwt clone URL [DIR]` to add
+            repositories to the workspace. `mwt` syncs the config and checks out
+            the base branch, so each person gets the same multi-repo map and can
+            create parallel worktrees without losing the shared project shape.
           </p>
         </div>
         <div class="code-panel">
-          <pre><code>workspace-config/
-  mwt.yaml
+          <pre><code><span class="prompt">$</span> git clone git@github.com:org/workspace-config.git
+<span class="prompt">$</span> cd workspace-config
+<span class="prompt">$</span> mwt clone git@github.com:org/backend.git repos/backend
+<span class="prompt">$</span> mwt clone git@github.com:org/frontend.git repos/frontend
 
-developer-a/
-  worktrees/
-    feature-auth/
-    bugfix-cache/
-
-developer-b/
-  worktrees/
-    release-check/
-    billing-ui/</code></pre>
+repos/
+  backend/
+  frontend/
+  infra/</code></pre>
         </div>
       </section>
 
