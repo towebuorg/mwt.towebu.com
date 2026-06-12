@@ -169,6 +169,33 @@ repos:
         </div>
       </section>
 
+      <section class="content-band split">
+        <div class="measure">
+          <p class="section-kicker">One last thing</p>
+          <h2>Put the workspace file in Git.</h2>
+          <p>
+            Create a repository for `mwt.yaml` and share it with the team. That
+            gives everyone the same multi-repo map, so each developer can create
+            parallel worktrees, switch between efforts, and keep unrelated work
+            separated without losing the shared project shape.
+          </p>
+        </div>
+        <div class="code-panel">
+          <pre><code>workspace-config/
+  mwt.yaml
+
+developer-a/
+  worktrees/
+    feature-auth/
+    bugfix-cache/
+
+developer-b/
+  worktrees/
+    release-check/
+    billing-ui/</code></pre>
+        </div>
+      </section>
+
       <section class="content-band split" id="release">
         <div class="measure">
           <p class="section-kicker">Install</p>
