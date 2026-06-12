@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="{{ .Description | default site.Params.description }}">
+    <title>{{ .Title }} - multi worktree</title>
+    <link rel="canonical" href="{{ site.BaseURL }}">
+    <link rel="stylesheet" href="{{ "css/styles.css" | relURL }}">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <canvas class="matrix-field" id="matrix-field" aria-hidden="true"></canvas>
+
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="mwt home">
+        <span class="brand-mark">m</span>
+        <span>mwt</span>
+      </a>
+      <nav aria-label="Main navigation">
+        <a href="#model">Model</a>
+        <a href="#commands">Commands</a>
+        <a href="#release">Install</a>
+        <a href="{{ site.Params.repository }}">Source</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="top">
+        <div class="hero-copy">
+          <p class="eyebrow">multi worktree</p>
+          <h1>One branch name. Many real Git repositories.</h1>
+          <p class="hero-intro">
+            `mwt` gives independent repos a shared worktree workflow while
+            keeping every repository, branch, merge, and failure mode visible.
+          </p>
+          <div class="hero-actions">
+            <a class="button" href="#commands">Read the workflow</a>
+            <a class="text-link" href="{{ site.Params.repository }}">GitHub</a>
+          </div>
+        </div>
+
+        <div class="terminal hero-terminal" aria-label="mwt command example">
+          <div class="terminal-bar">
+            <span></span><span></span><span></span>
+            <p>feature-auth</p>
+          </div>
+          <pre><code><span class="prompt">$</span> mwt create feature-auth
+created backend  -> worktrees/feature-auth/backend
+created frontend -> worktrees/feature-auth/frontend
+created infra    -> worktrees/feature-auth/infra
+
+<span class="prompt">$</span> mwt status feature-auth
+backend   feature-auth clean +2/-0
+frontend  feature-auth dirty +1/-0
+infra     feature-auth clean +0/-0</code></pre>
+        </div>
+      </section>
+
+      <section class="content-band" id="model">
+        <div class="measure">
+          <p class="section-kicker">The model</p>
+          <h2>Not a monorepo. Not a magic branch. Just coordinated Git.</h2>
+          <p>
+            Each source repository remains canonical. `mwt` records those repos
+            in a local config file, creates real Git worktrees under a common
+            directory, and runs standard Git commands inside each repo.
+          </p>
+          <p>
+            A multi-worktree name such as `feature-auth` becomes one branch per
+            repository. The name is shared; the history is still independent.
+          </p>
+        </div>
+
+        <div class="diagram" aria-label="workspace directory structure">
+          <pre><code>workspace/
+  mwt.yaml
+  repos/
+    backend/
+    frontend/
+    infra/
+  worktrees/
+    feature-auth/
+      backend/
+      frontend/
+      infra/</code></pre>
+        </div>
+      </section>
+
+      <section class="content-band split">
+        <div class="measure">
+          <p class="section-kicker">Config</p>
+          <h2>Let the tool keep the repo list current.</h2>
+          <p>
+            `mwt init` discovers non-nested Git repositories and writes their
+            relative paths, current branches, and remotes. `mwt sync` repeats
+            that scan, adding new repos and removing entries whose directories
+            are gone.
+          </p>
+        </div>
+        <div class="code-panel">
+          <pre><code>worktree_root: ./worktrees
+base_branch: main
+
+repos:
+  backend:
+    path: ./repos/backend
+    branch: main
+    remotes:
+      origin: git@github.com:org/backend.git</code></pre>
+        </div>
+      </section>
+
+      <section class="commands" id="commands">
+        <div class="measure">
+          <p class="section-kicker">Commands</p>
+          <h2>The daily loop is intentionally small.</h2>
+        </div>
+
+        <div class="command-grid">
+          <article>
+            <span>01</span>
+            <h3>Initialize</h3>
+            <code>mwt init</code>
+            <p>Scan the workspace and create `mwt.yaml` from real Git repos.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Synchronize</h3>
+            <code>mwt sync</code>
+            <p>Refresh paths, branches, and remotes after repos are added or removed.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Fetch a base</h3>
+            <code>mwt fetch main</code>
+            <p>Fetch every canonical repo and check each one out to a common branch.</p>
+          </article>
+          <article>
+            <span>04</span>
+            <h3>Create worktrees</h3>
+            <code>mwt create feature-x</code>
+            <p>Create one real Git worktree per configured repository.</p>
+          </article>
+          <article>
+            <span>05</span>
+            <h3>Inspect work</h3>
+            <code>mwt status feature-x</code>
+            <p>Show branch, clean state, ahead/behind counts, and short status.</p>
+          </article>
+          <article>
+            <span>06</span>
+            <h3>Run commands</h3>
+            <code>mwt foreach feature-x -- go test ./...</code>
+            <p>Execute the same command inside every named worktree.</p>
+          </article>
+          <article>
+            <span>07</span>
+            <h3>Snapshot</h3>
+            <code>mwt snapshot feature-x</code>
+            <p>Print the exact commit in each repo before a risky operation.</p>
+          </article>
+          <article>
+            <span>08</span>
+            <h3>Merge carefully</h3>
+            <code>mwt merge feature-x --dry-run</code>
+            <p>Validate all repos before merging. Cross-repo merges are not atomic.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="content-band split" id="release">
+        <div class="measure">
+          <p class="section-kicker">Install</p>
+          <h2>One binary, released from tags.</h2>
+          <p>
+            Tagged releases publish archives, checksums, a changelog, and a
+            Homebrew cask. The binary also includes a `version` command so you
+            can check exactly what was installed.
+          </p>
+        </div>
+        <div class="terminal">
+          <div class="terminal-bar">
+            <span></span><span></span><span></span>
+            <p>install</p>
+          </div>
+          <pre><code><span class="prompt">$</span> brew tap towebuorg/tap
+<span class="prompt">$</span> brew install --cask mwt
+<span class="prompt">$</span> mwt version</code></pre>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>mwt.towebu.com</p>
+      <a href="{{ site.Params.repository }}">github.com/towebuorg/mwt</a>
+    </footer>
+
+    <script src="{{ "js/matrix.js" | relURL }}"></script>
+  </body>
+</html>

@@ -1,0 +1,14 @@
+baseURL = "https://mwt.towebu.com/"
+locale = "en-US"
+title = "mwt"
+disableKinds = ["taxonomy", "term", "RSS", "sitemap", "robotsTXT", "404"]
+
+[params]
+description = "mwt coordinates Git worktrees across independent repositories without pretending they are one monorepo."
+repository = "https://github.com/towebuorg/mwt"
+install = "brew tap towebuorg/tap && brew install --cask mwt"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
